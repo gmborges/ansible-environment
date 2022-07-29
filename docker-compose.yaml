@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+
+    ansible-controller:
+        image: ans-controller:1.0
+        container_name: ansible-controller
+        hostname: ansible-controller
+        networks:
+            mynet:
+                ipv4_address: 172.18.0.22
+
+    ansible-target01:
+        image: ans-target:1.0
+        container_name: ansible-target01
+        hostname: ansible-target01
+        networks:
+            mynet:
+                ipv4_address: 172.18.0.23
+
+    ansible-target02:
+        image: ans-target:1.0
+        container_name: ansible-target02
+        hostname: ansible-target02
+        networks:
+            mynet:
+                ipv4_address: 172.18.0.24
+        
+networks:
+    mynet:
+        ipam:
+            driver: default
+            config:
+                - subnet: "172.18.0.0/16" 

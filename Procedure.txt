@@ -1,0 +1,45 @@
+ANSIBLE CONTROLLER:
+-------------------
+1. Installing dependencies:
+apt update
+apt install python3 python3-pip -y
+apt install openssh-server -y
+
+2. Installing Ansible on Ubuntu:
+apt install software-properties-common -y
+add-apt-repository --yes --update ppa:ansible/ansible
+apt install ansible -y
+
+3. Create a specific ansible user:
+useradd -m -s /bin/bash ansible
+
+4. Change hostname:
+echo "ansible-controller" > /etc/hostname
+
+5. Copy SSH keys to ansible user directory
+cp id_rsa id_rsa.pub /home/ansible/.ssh/
+
+6. Create Ansible directory layout
+mkdir /home/ansible/projects
+mkdir /home/ansible/projects/group_vars/
+mkdir /home/ansible/projects/host_vars/
+
+7. Copy inventory file to ansible controller
+cp production /home/ansible/projects
+
+ANSIBLE TARGETS:
+----------------
+1. Installing dependencies:
+apt update
+apt install openssh-server
+
+2. Create a specific ansible user:
+useradd -m -s /bin/bash ansible
+
+
+AD-HOC COMMANDS:
+----------------
+docker network create --subnet=172.18.0.0/16 mynet
+docker run -it --name=ansible-controller --hostname ansible-controller --net ansible-environment_mynet --ip 172.18.0.22 ans-controller:1.0
+docker run -it --name=ansible-target01 --hostname ansible-target01 --net ansible-environment_mynet --ip 172.18.0.23 ans-target:1.0
+docker run -it --name=ansible-target02 --hostname ansible-target02 --net ansible-environment_mynet --ip 172.18.0.24 ans-target:1.0
