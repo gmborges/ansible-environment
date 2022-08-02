@@ -27,7 +27,8 @@ WORKDIR /home/ansible
 COPY ./ssh-keys ./.ssh
 RUN chown -R ansible:ansible ./.ssh && \
     chmod -R 770 ./.ssh && \
-    chmod 600 ./.ssh/id_rsa
+    chmod 600 ./.ssh/id_rsa && \
+    chmod 664 ./.ssh/id_rsa.pub
 
 # Disable SSH key host checking for Ansible
 RUN echo "[defaults]" >> /etc/ansible/ansible.cfg && \
@@ -39,4 +40,4 @@ RUN mkdir -m 770 -p ./projects && \
     mkdir -m 770 -p ./projects/host_vars/ && \
     chown -R ansible:ansible ./projects
 
-CMD ["bash"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]

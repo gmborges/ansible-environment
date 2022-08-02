@@ -21,4 +21,4 @@ RUN chown -R ansible:ansible ./.ssh && \
     chmod -R 770 ./.ssh && \
     chmod 644 ./.ssh/authorized_keys
 
-CMD ["bash"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
