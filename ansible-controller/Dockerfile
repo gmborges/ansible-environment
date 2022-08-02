@@ -39,4 +39,4 @@ RUN mkdir -m 770 -p ./projects && \
     mkdir -m 770 -p ./projects/host_vars/ && \
     chown -R ansible:ansible ./projects
 
-CMD ["bash"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
