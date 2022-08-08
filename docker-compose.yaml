@@ -5,14 +5,19 @@ services:
     ansible-controller:
         image: ans-controller:1.0
         container_name: ansible-controller
+        user: ansible
         hostname: ansible-controller
         networks:
             mynet:
                 ipv4_address: 172.18.0.22
+        depends_on:
+          - ansible_target01
+          - ansible_target02
 
     ansible-target01:
         image: ans-target:1.0
         container_name: ansible-target01
+        user: ansible
         hostname: ansible-target01
         networks:
             mynet:
@@ -21,6 +26,7 @@ services:
     ansible-target02:
         image: ans-target:1.0
         container_name: ansible-target02
+        user: ansible
         hostname: ansible-target02
         networks:
             mynet:

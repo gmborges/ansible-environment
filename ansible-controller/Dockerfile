@@ -12,7 +12,8 @@ RUN apt update && \
         python3 \
         python3-pip \
         openssh-server \
-        iputils-ping
+        iputils-ping \
+        vim
 
 # Installing Ansible on Ubuntu
 RUN apt install software-properties-common -y && \
@@ -20,7 +21,9 @@ RUN apt install software-properties-common -y && \
     apt install ansible -y
 
 # Create a specific ansible user
-RUN useradd -m -s /bin/bash ansible
+RUN useradd -m -s /bin/bash ansible && \
+    # Para gerar o hash da senha para o arquivo /etc/shadow: "printf 'ansible@pass' | mkpasswd --stdin -m sha-256"
+    echo 'ansible:$5$isgEWRkjJcNp4t$hmVJytDR/huLIjSXnIuANCQwuCGkgR/GzQ737SMZsC9' | chpasswd --encrypted
 
 # Copy SSH keys to ansible user directory
 WORKDIR /home/ansible
@@ -35,9 +38,8 @@ RUN echo "[defaults]" >> /etc/ansible/ansible.cfg && \
     echo "host_key_checking = False" >> /etc/ansible/ansible.cfg
 
 # Create Ansible directory layout
-RUN mkdir -m 770 -p ./projects && \
-    mkdir -m 770 -p ./projects/group_vars/ && \
-    mkdir -m 770 -p ./projects/host_vars/ && \
+COPY ./projects ./projects
+RUN chmod -R 770 ./projects && \
     chown -R ansible:ansible ./projects
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
